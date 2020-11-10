@@ -8,17 +8,98 @@
       canvas {
         background: #eee;
       }
+      .color-btn {
+        width: 30px;
+        height: 30px;
+        border: 0;
+        border-radius: 50%;
+      }
+      .color-btn[data-color='black']{
+        background-color: black;
+      }
+      .color-btn[data-color='red']{
+        background-color: red;
+      }
+      .color-btn[data-color='green']{
+        background-color: green;
+      }
+      .color-btn[data-color='blue']{
+        background-color: blue;
+      }
+      .image-btn {
+        width: 40px;
+        height: 40px;
+        background: url('./images/kill.jpg') no-repeat 10% 10%;
+      }
     </style>
   </head>
 
   <body>
     <h1>그림판</h1>
     <canvas class="canvas" width="600" height="400">이 브라우저는 캔버스를 지원하지 않습니다.</canvas>
-
+    <div class="control">
+      <button class="color-btn" data-type="color" data-color="black"></button>
+      <button class="color-btn" data-type="color" data-color="red"></button>
+      <button class="color-btn" data-type="color" data-color="green"></button>
+      <button class="color-btn" data-type="color" data-color="blue"></button>
+      <button class="image-btn" data-type="image" ></button>
+      <button class="save-btn">이미지 저장</button>
+    </div>
+    <div class="result-image"></div>
     <script>
       const canvas = document.querySelector('.canvas');
       const context = canvas.getContext('2d');
+      let modeChange; // true일때만 그리기
+      const control = document.querySelector('.control');
+      let Vcolor = 'black';
+      let brush = 'color'; // 브러쉬 선택
+      const saveBtn = document.querySelector('.save-btn');
+      const resultImage = document.querySelector('.result-image');
+      
+      const imgElem = new Image();
+      imgElem.src = './images/kill.jpg';
 
+      function clickHandler (e) {
+        if (!modeChange) {
+          return;
+        }
+        switch (brush) {
+          case 'color' :
+            context.beginPath();
+            //마우스 클릭 위치에 원 그리기
+            context.arc(e.layerX, e.layerY, 10, 0, Math.PI * 2, false);
+            context.fill();
+            break
+          case 'image' :
+            context.drawImage(imgElem, e.layerX, e.layerY, 50, 50);
+            break
+        }
+        
+      }
+
+      function downHandler() {
+        modeChange = true;
+      }
+      function upHandler() {
+        modeChange = false;
+      }
+      function setColor(e) {
+        brush = e.target.getAttribute('data-type');
+        Vcolor = e.target.getAttribute('data-color');
+        context.fillStyle = Vcolor;
+      }
+      function createImage() {
+        const url = canvas.toDataURL('image/png');
+        const imgElem = new Image();
+        imgElem.src = url;
+        resultImage.appendChild(imgElem);
+      }
+
+      canvas.addEventListener('mousedown', downHandler);
+      canvas.addEventListener('mouseup', upHandler);
+      canvas.addEventListener('mousemove', clickHandler);
+      control.addEventListener('click', setColor);
+      saveBtn.addEventListener('click', createImage);
 
     </script>
   </body>
