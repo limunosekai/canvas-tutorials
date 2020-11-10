@@ -21,11 +21,11 @@
 
       // const imgElem = document.createElement('img');
       const imgElem = new Image();
-      imgElem.src = '../images/ilbuni1.png';
+      imgElem.src = '../images/kill.jpg';
       imgElem.addEventListener('load', () => {
-        context.drawImage(imgElem, 50, 50);
-        context.drawImage(imgElem, 50, 50, 70, 120);
-        context.drawImage(imgElem, 100, 100, 200, 200, 0, 0, 100, 100);
+        // context.drawImage(imgElem, 50, 50);
+        context.drawImage(imgElem, 50, 50, 200, 200); // x값,y값,넓이,높이
+        context.drawImage(imgElem, 100, 100, 200, 200, 0, 0, 100, 100); // 이미지 일부만 따서 그림 
       });
     </script>
   </body>

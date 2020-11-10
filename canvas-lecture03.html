@@ -24,17 +24,26 @@
       const ctx = canvas.getContext('2d');
       let xPos = 10;
       let count = 0;
+      let timerID;
 
       function draw() {
 
       //setInterval 함수 안쓰고 속도 조절
       
-      if (count % 30 === 0){
+      if (count % 20 === 0){
         ctx.clearRect(0,0,canvas.width, canvas.height);
         ctx.beginPath();
         ctx.arc(xPos, 100, 10,0,Math.PI * 2, false);
         ctx.fill();
         xPos += 15;
+        
+        timerID = requestAnimationFrame(draw);
+        if(xPos >= canvas.width - 10) {
+          cancelAnimationFrame(timerID);
+        }
+        // 종료
+        // if(xPos >= canvas.width - 10) {
+        //   return;
       }
         count++;
         requestAnimationFrame(draw);
